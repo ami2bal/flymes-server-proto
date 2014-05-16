@@ -1,9 +1,9 @@
 package com.mygbox.multi;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,16 +14,34 @@ import java.net.URLConnection;
  */
 public class ClientLauncher {
 
+    public static int i = 0;
+
     public static void main(String[] args) {
+        List<Socket> socketList = new ArrayList();
         try {
-            for(int i = 0 ; i < 10000000 ; i++){
-                System.out.println(i);
+            for (int i = 0; i < 10000000; i++) {
+                /*System.out.println(i);
                 URL url = new URL("http://localhost:9000/");
                 URLConnection urlConnection = url.openConnection();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));*/
+
+                Socket socket = new Socket("127.0.0.1", 9000);
+                socketList.add(socket);
+
+                i++;
+                System.out.println("Connected : " + i);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            for (Socket socket : socketList) {
+                if (null != socket) {
+                    try {
+                        socket.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }
